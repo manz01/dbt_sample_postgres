@@ -1,0 +1,44 @@
+
+# Name your project! Project names should contain only lowercase characters
+# and underscores. A good package name should reflect your organization's
+# name or the intended use of these models
+name: 'dbt_sample_postgres'
+version: '1.0.0'
+
+# This setting configures which "profile" dbt uses for this project.
+profile: 'dbt_sample_postgres'
+
+# These configurations specify where dbt should look for different types of files.
+# The `model-paths` config, for example, states that models in this project can be
+# found in the "models/" directory. You probably won't need to change these!
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:         # directories to be removed by `dbt clean`
+  - "target"
+  - "dbt_packages"
+
+
+models:
+  dbt_sample_postgres:
+    01_raw:
+      +materialized: copy_to_postgres
+      +schema: raw
+      +tags: go_sales_raw
+    02_stg:
+      +materialized: table
+      +schema: stg
+      +tags: go_sales_stg 
+    03_det:
+      +materialized: incremental
+      +schema: det
+      +tags: go_sales_det
+    04_mrt:
+      +materialized: table
+      +schema: mrt
+      +tags: go_sales_mrt
+
