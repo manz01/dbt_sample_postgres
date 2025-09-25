@@ -1,0 +1,15 @@
+
+target/
+dbt_packages/
+logs/
+dbt_internal_packages/
+models/example/my_first_dbt_model.sql
+models/example/my_second_dbt_model.sql
+docs/dbt_init.md
+models/example/schema.yml
+analyses/.gitignore
+macros/.gitkeep
+seeds/.gitkeep
+snapshots/.gitkeep
+tests/.gitkeep
+package-lock.yml

@@ -1,0 +1,89 @@
+################################################################################
+#               _____          _____       _                                   #
+#              / ____|        / ____|     | |                                  #
+#             | |  __  ___   | (___   __ _| | ___  ___                         #
+#             | | |_ |/ _ \   \___ \ / _` | |/ _ \/ __|                        #
+#             | |__| | (_) |  ____) | (_| | |  __/\__ \                        #
+#              \_____|\___/  |_____/ \__,_|_|\___||___/                        #                        
+#                                                                              # 
+################################################################################
+#  Program:        .sqlfluff
+#  Project:        dbt_sample_postgres
+#  Description:    SQLFluff configuration file for linting and formatting SQL
+#                  code
+#  Author:         Manzar Ahmed
+#  First Created:  Aug 2025
+#
+#  Prerequisites:
+#  -----------------------------------------------------------------------------
+#  1. Install SQLFluff support:
+#     pip install sqlfluff
+#
+#  2. Verify installation:
+#     sqlfluff --version
+#
+#  3. (Optional) Install pre-commit for local checks:
+#     pip install pre-commit
+#
+################################################################################
+#  Program history:
+################################################################################
+#  Date        Programmer             Description
+# ----------  ---------------------- -------------------------------------------
+#  2025-08-02  Manzar Ahmed           v0.01 / Initial creation
+################################################################################
+
+[sqlfluff]
+# Core configuration
+dialect = postgres
+templater = dbt
+runaway_limit = 10
+max_line_length = 80
+indent_unit = space
+
+[templater]
+# Trim whitespace for clean rendering
+jinja_trim_blocks = true
+jinja_lstrip_blocks = true
+
+[sqlfluff:indentation]
+tab_space_size = 4
+
+[sqlfluff:layout:type:comma]
+spacing_before = touch
+line_position = trailing
+
+[sqlfluff:rules:capitalisation.keywords] 
+capitalisation_policy = lower
+
+[sqlfluff:rules:aliasing.table]
+aliasing = explicit
+
+[sqlfluff:rules:aliasing.column]
+aliasing = explicit
+
+[sqlfluff:rules:aliasing.expression]
+allow_scalar = False
+
+[sqlfluff:rules:capitalisation.identifiers]
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.functions]
+capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.literals]
+capitalisation_policy = lower
+
+[sqlfluff:rules:ambiguous.column_references]  # Number in group by
+group_by_and_order_by_style = implicit
+
+[templater.jinja]
+# Ensure dbt context is loaded
+load_macros_from_path = macros/utils
+apply_dbt_builtins = true
+
+[lint]
+# Rules applied globally
+exclude_rules = L009,L031,L034,ST06  # L009: alias length, L031: 
+                                     # UNION ALL formatting, 
+                                     # L034: select wildcards
