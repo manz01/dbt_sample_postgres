@@ -23,15 +23,12 @@
   {% endif %}
 
   -- Create the intermediate table
-  {% call statement('create_table', fetch_result=False) %}
+  {% call statement('main', fetch_result=False) %}
     CREATE TABLE {{ intermediate_relation }}
     (
         {{ columns }}
     );
-  {% endcall %}
 
-  -- Load CSV using COPY
-  {% call statement('copy_data', fetch_result=False) %}
     COPY {{ intermediate_relation }}
     FROM '{{ csv_path }}'
     WITH (
@@ -67,11 +64,6 @@
   {{ drop_relation_if_exists(backup_relation) }}
 
   {{ run_hooks(post_hooks, inside_transaction=False) }}
-
-  -- Required dummy 'main' block to satisfy dbt
-  {% call statement('main', fetch_result=False) %}
-    select 1;
-  {% endcall %}
 
   {{ return({'relations': [target_relation]}) }}
 {% endmaterialization %}
